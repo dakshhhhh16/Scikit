@@ -3,14 +3,19 @@ import pandas as pd
 import numpy as np
 import sklearn
 import pickle
+import os
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 label_encoder = LabelEncoder()
 scaler = StandardScaler()
 
-model = pickle.load(open('7 logistic_model.pkl','rb'))
-df = pd.read_csv("7 churn.csv")
+base_dir = os.path.dirname(__file__)
+model_path = os.path.join(base_dir, 'Churn_prediction.pkl')
+data_path = os.path.join(os.path.dirname(base_dir), 'Sample_Data', 'churn.csv')
 
-st.title("customer Churn Prediction Using Logistic Regression for Classification")
+model = pickle.load(open(model_path, 'rb'))
+df = pd.read_csv(data_path)
+
+st.title("Customer Churn Prediction Using Logistic Regression")
 gender = st.selectbox("Select Gender",options=['Female','Male'])
 SeniorCitizen = st.selectbox("Your you a senior citizen?", options=['Yes','No'])
 Partner = st.selectbox("Do you have partner?", options=['Yes','No'])
@@ -90,8 +95,8 @@ if st.button("Predict churn or not"):
     if result == 1:
         st.title("Churn")
         st.write("Here are 10 tips for Churn Prevention:")
-        st.dataframe(churn_tips_df, height=400,width=600)
+        st.dataframe(churn_tips_df, height=400, use_container_width=True)
     else:
         st.title('Not Churn')
         st.write("Here are 10 tips for Customer Retention (Not Churning):")
-        st.dataframe(retention_tips_df, height=400,width=400)
+        st.dataframe(retention_tips_df, height=400, use_container_width=True)
